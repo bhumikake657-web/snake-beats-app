@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-cyan: #00ffff;
+  --color-magenta: #ff00ff;
+  --color-black: #000000;
+  --font-pixel: "Press Start 2P", cursive;
+  --font-terminal: "VT323", monospace;
+}
+
+body {
+  background-color: var(--color-black);
+  color: var(--color-cyan);
+  font-family: var(--font-terminal);
+  overflow-y: auto;
+  margin: 0;
+  image-rendering: pixelated;
+}
+
+/* Static Noise Overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://upload.wikimedia.org/wikipedia/commons/5/5a/Canal_Static.gif");
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Screen Tearing Effect */
+.screen-tear {
+  position: relative;
+  overflow-x: hidden;
+}
+
+.screen-tear::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(transparent 50%, rgba(0, 255, 255, 0.1) 50%);
+  background-size: 100% 4px;
+  pointer-events: none;
+  animation: tear 0.2s infinite;
+}
+
+@keyframes tear {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}
+
+/* Glitch Art Text */
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  color: var(--color-cyan);
+  font-family: var(--font-pixel);
+  text-transform: uppercase;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--color-black);
+}
+
+.glitch-text::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--color-magenta);
+  clip: rect(44px, 450px, 56px, 0);
+  animation: glitch-anim 5s infinite linear alternate-reverse;
+}
+
+.glitch-text::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--color-cyan), 2px 2px var(--color-magenta);
+  animation: glitch-anim2 1s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% { clip: rect(31px, 9999px, 94px, 0); transform: skew(0.85deg); }
+  5% { clip: rect(70px, 9999px, 71px, 0); transform: skew(0.2deg); }
+  10% { clip: rect(10px, 9999px, 33px, 0); transform: skew(0.45deg); }
+  100% { clip: rect(60px, 9999px, 65px, 0); transform: skew(0.3deg); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(65px, 9999px, 100px, 0); transform: skew(0.15deg); }
+  23% { clip: rect(10px, 9999px, 20px, 0); transform: skew(0.5deg); }
+  100% { clip: rect(40px, 9999px, 50px, 0); transform: skew(0.25deg); }
+}
+
+/* Jarring Contrast Buttons */
+.jarring-btn {
+  @apply px-4 py-2 border-2 border-cyan text-cyan font-pixel text-[10px] transition-all;
+  background: transparent;
+  box-shadow: 4px 4px 0 var(--color-magenta);
+}
+
+.jarring-btn:hover {
+  background: var(--color-cyan);
+  color: var(--color-black);
+  box-shadow: -4px -4px 0 var(--color-magenta);
+  transform: translate(2px, 2px);
+}
+
+.jarring-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 0 0 0 var(--color-magenta);
+}
+
+/* Scanline Overlay */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 16, 16, 0) 50%,
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 9998;
+  pointer-events: none;
+}
+
+.font-pixel { font-family: var(--font-pixel); }
+.font-terminal { font-family: var(--font-terminal); }
